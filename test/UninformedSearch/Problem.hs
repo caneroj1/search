@@ -1,8 +1,9 @@
 {-# LANGUAGE TypeFamilies #-}
 
-module Lib where
+module UninformedSearch.Problem where
 
 import Control.Search.Types
+import Control.Search.BFS
 import Data.Set (Set)
 import qualified Data.Set as Set hiding (Set)
 

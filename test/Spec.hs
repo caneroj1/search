@@ -1,2 +1,5 @@
+import UninformedSearch.TestBFS
+
 main :: IO ()
-main = putStrLn "Test suite not yet implemented"
+main = do
+  testBFS

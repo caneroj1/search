@@ -1,34 +1,42 @@
-module Control.Search.BFS where
+module Control.Search.BFS
+(
+  bfs
+) where
 
-import Control.Search.Types
+import Control.Search.Internal.Path
 import Control.Search.Internal.Queue
---
--- bfs :: (Searchable a) => a -> Maybe [(State a, Maybe (Action a), Maybe Integer)]
--- bfs p
---   | goal is p = Just [(is, Nothing, Just 0)]
---   | otherwise = _bfs p initialFrontier emptySet Nothing
---   where
---     is              = initialState p
---     initialFrontier = is `insert` Seq.empty
---
--- _bfs :: (Searchable a)
---      => a
---      -> Queue (State a)
---      -> ExploredSet a
---      -> Maybe (Action a)
---      -> Maybe [(State a, Maybe (Action a), Maybe Integer)]
--- _bfs p frontier exploredSet actionTaken
---   | empty frontier = Nothing
---   | otherwise      = Nothing--pure (:) <$> Just (f, actionTaken) <*>
---   where
---     Just (f, frontier') = pop frontier
---     exploredSet'        = explore f exploredSet
---     acts                = actions f p
---     nxts                =
---       concatMap (\a -> zip (follows f a p) (repeat a) ) acts -- filter here
---     tryEach ((nextSt, a):ps)
---       | goal nextSt p = Just [(nextSt, Just a, c)]
---       | otherwise     = pure (:) <$> Just (f, actionTaken, c)
---                                  <*> _bfs p frontier exploredSet' (Just a)
---       where
---         c = cost f a nextSt p
+import Control.Search.Types
+
+isAtGoal :: (Searchable a) => Path (State a) (Action a) -> a -> Bool
+isAtGoal (Node a _ _)   = goal a
+isAtGoal (Path a _ _ _) = goal a
+
+bfs :: (Searchable a) => a -> Maybe (Path (State a) (Action a))
+bfs p = runLevel p [is]
+  where
+    is              = Node (initialState p) Nothing Nothing
+    -- initialFrontier = is `insert` Seq.empty
+
+runLevel :: (Searchable a)
+         => a
+         -> Level (State a) (Action a)
+         -> Maybe (Path (State a) (Action a))
+runLevel _ []    = Nothing
+runLevel p level =
+  either Just (runLevel p) $ concat <$> traverse visit level
+  where
+    visit path
+      | isAtGoal path p = Left path
+      | otherwise       = Right $ makeChildren p path
+
+makeChildren :: (Searchable a)
+             => a
+             -> Path (State a) (Action a)
+             -> Level (State a) (Action a)
+makeChildren p path = do
+  a <- actions st p
+  s <- follows st a p
+  let nc = cost st a s p
+    in [Node s (Just a) nc -+- path]
+  where
+    st = state path

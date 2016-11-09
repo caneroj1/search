@@ -2,6 +2,8 @@
 
 module Control.Search.Types where
 
+type Cost = Maybe Integer
+
 class Searchable a where
   -- | Associated type that represents the type of States in the problem space.
   type State a
@@ -27,7 +29,7 @@ class Searchable a where
   -- | cost is a function that should return, given the current state, an action
   -- to be performed on that state, and the state that is the result of that
   -- action, the cost of doing that action.
-  cost :: State a -> Action a -> State a -> a -> Maybe Integer
+  cost :: State a -> Action a -> State a -> a -> Cost
 
   -- | follows is a function that, given a state and an action to be performed
   -- on that state, returns a new list of states.

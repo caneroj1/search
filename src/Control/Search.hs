@@ -6,4 +6,5 @@ where
 
 import Control.Search.BFS            as X
 import Control.Search.Internal.Queue as X
+import Control.Search.Internal.Path  as X
 import Control.Search.Types          as X
