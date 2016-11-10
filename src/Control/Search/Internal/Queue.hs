@@ -3,6 +3,7 @@ module Control.Search.Internal.Queue
   Queue
 , insert
 , empty
+, nullq
 , pop
 ) where
 
@@ -13,11 +14,14 @@ newtype Queue a = Q {
     unQueue :: Seq a
   }
 
+empty :: Queue a
+empty = Q Seq.empty
+
 insert :: a -> Queue a -> Queue a
 insert a = Q . flip (|>) a . unQueue
 
-empty :: Queue a -> Bool
-empty = Seq.null . unQueue
+nullq :: Queue a -> Bool
+nullq = Seq.null . unQueue
 
 pop :: Queue a -> Maybe (a, Queue a)
 pop = _pop . Seq.viewl . unQueue

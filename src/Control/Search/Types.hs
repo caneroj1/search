@@ -1,10 +1,11 @@
-{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE TypeFamilies     #-}
+{-# LANGUAGE FlexibleContexts #-}
 
 module Control.Search.Types where
 
 type Cost = Maybe Integer
 
-class Searchable a where
+class (Ord (State a), Ord (Action a)) => Searchable a where
   -- | Associated type that represents the type of States in the problem space.
   type State a
 

@@ -4,30 +4,36 @@ module Control.Search.BFS
 ) where
 
 import Control.Search.Internal.Path
-import Control.Search.Internal.Queue
+import Control.Search.Internal.Frontier
 import Control.Search.Types
+import Data.List
+import Data.Maybe
 
 isAtGoal :: (Searchable a) => Path (State a) (Action a) -> a -> Bool
 isAtGoal (Node a _ _)   = goal a
 isAtGoal (Path a _ _ _) = goal a
 
 bfs :: (Searchable a) => a -> Maybe (Path (State a) (Action a))
-bfs p = runLevel p [is]
+bfs p = search p (frontier p) emptySet
   where
-    is              = Node (initialState p) Nothing Nothing
-    -- initialFrontier = is `insert` Seq.empty
+    is       p = Node (initialState p) Nothing Nothing
+    frontier p = mkFrontier `addFrontier` is p
 
-runLevel :: (Searchable a)
+search :: (Searchable a)
          => a
-         -> Level (State a) (Action a)
+         -> Frontier (Path (State a) (Action a))
+         -> ExploredSet a
          -> Maybe (Path (State a) (Action a))
-runLevel _ []    = Nothing
-runLevel p level =
-  either Just (runLevel p) $ concat <$> traverse visit level
+search p frontier explored
+  | isNothing mbf          = Nothing
+  | isExplored st explored = search p frontier' explored
+  | isAtGoal path p        = Just path
+  | otherwise              = search p frontier'' (explore st explored)
   where
-    visit path
-      | isAtGoal path p = Left path
-      | otherwise       = Right $ makeChildren p path
+    mbf                    = headf frontier
+    Just (path, frontier') = mbf
+    st                     = state path
+    frontier''             = foldl' addFrontier frontier' $! makeChildren p path
 
 makeChildren :: (Searchable a)
              => a
