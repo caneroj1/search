@@ -17,6 +17,7 @@ library
   hs-source-dirs:      src
   exposed-modules:     Control.Search
                      , Control.Search.BFS
+                     , Control.Search.Internal.Frontier
                      , Control.Search.Internal.Path
                      , Control.Search.Internal.Queue
                      , Control.Search.Types
@@ -35,8 +36,10 @@ executable search-exe
 test-suite search-test
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
-  other-modules:       UninformedSearch.Problem
+  other-modules:       UninformedSearch.Problem1
+                     , UninformedSearch.Problem2
                      , UninformedSearch.TestBFS
+                     , UninformedSearch.GetToBucharest
   main-is:             Spec.hs
   build-depends:       base
                      , search

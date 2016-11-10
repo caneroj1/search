@@ -3,26 +3,23 @@ module UninformedSearch.TestBFS
   testBFS
 ) where
 
-import UninformedSearch.Problem
-import Control.Monad
+import UninformedSearch.GetToBucharest
+import qualified UninformedSearch.Problem1 as P1
+import qualified UninformedSearch.Problem2 as P2
 import Control.Search.BFS
-import Control.Search.Internal.Path
 
-testBFS :: IO ()
 testBFS = do
-  putStrLn "\n"
-  putStrLn "Testing BFS"
-  putStrLn "-----------"
-  case bfs initProblem of
+  test 1 P1.initProblem P1.answer
+  test 2 P2.initProblem P2.answer
+
+test :: Int -> GetToBucharest -> Answer -> IO ()
+test i p answer = do
+  putStrLn    "\n"
+  putStrLn $  "Testing BFS [" ++ show i ++ "]"
+  case bfs p of
     Nothing -> putStrLn "Failure! No solution found!"
     Just p  -> if p /= answer
                 then do
                   putStrLn $ "Expected: " ++ show answer
                   putStrLn $ "Got:      " ++ show p
                 else putStrLn "Pass!"
-
-answer :: Path Location Drive
-answer =
-  Path Bucharest (Just Drive) (Just 211) $
-    Path Fagaras (Just Drive) (Just 99)  $
-      Node Sibiu Nothing Nothing

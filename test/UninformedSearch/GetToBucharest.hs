@@ -1,11 +1,14 @@
-{-# LANGUAGE TypeFamilies #-}
+-- {-# LANGUAGE TypeFamilies #-}
 
-module UninformedSearch.Problem where
+module UninformedSearch.GetToBucharest where
 
+import Control.Search.Internal.Path
 import Control.Search.Types
 import Control.Search.BFS
 import Data.Set (Set)
 import qualified Data.Set as Set hiding (Set)
+
+type Answer = Path Location Drive
 
 data Location = Sibiu
               | Fagaras
@@ -23,35 +26,6 @@ data GetToBucharest = Problem {
   , actionFn :: Location -> [Drive]
   , initial  :: Location
   }
-
-initProblem :: GetToBucharest
-initProblem = Problem {
-    costFn   = _costs
-  , followFn = _follow
-  , goalFn   = _goal
-  , actionFn = _actions
-  , initial  = Sibiu
-  }
-  where
-    _costs Sibiu Drive Fagaras         = Just 99
-    _costs Sibiu Drive RimnicuVilcea   = Just 80
-    _costs Fagaras Drive Bucharest     = Just 211
-    _costs RimnicuVilcea Drive Pitesti = Just 97
-    _costs Pitesti Drive Bucharest     = Just 101
-    _costs _ _ _                       = Nothing
-
-    _follow Sibiu         Drive = [Fagaras, RimnicuVilcea]
-    _follow Fagaras       Drive = [Bucharest]
-    _follow RimnicuVilcea Drive = [Pitesti]
-    _follow Pitesti       Drive = [Bucharest]
-    _follow Bucharest     Drive = []
-
-    _goal Bucharest = True
-    _goal _         = False
-
-    _actions Bucharest = []
-    _actions _         = [Drive]
-
 
 instance Searchable GetToBucharest where
   type State  GetToBucharest      = Location
