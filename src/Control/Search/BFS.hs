@@ -1,3 +1,5 @@
+{-# LANGUAGE TypeFamilies #-}
+
 module Control.Search.BFS
 (
   bfs
@@ -5,6 +7,7 @@ module Control.Search.BFS
 
 import Control.Search.Internal.Path
 import Control.Search.Internal.Frontier
+import Control.Search.Internal.QueueFrontier
 import Control.Search.Types
 import Data.List
 import Data.Maybe
@@ -17,11 +20,11 @@ bfs :: (Searchable a) => a -> Maybe (Path (State a) (Action a))
 bfs p = search p (frontier p) emptySet
   where
     is       p = Node (initialState p) Nothing Nothing
-    frontier p = mkFrontier `addFrontier` is p
+    frontier p = makeFrontier `addFrontier` is p
 
 search :: (Searchable a)
          => a
-         -> Frontier (Path (State a) (Action a))
+         -> QueueFrontier (State a) (Action a)
          -> ExploredSet a
          -> Maybe (Path (State a) (Action a))
 search p frontier explored
@@ -30,7 +33,7 @@ search p frontier explored
   | isAtGoal path p        = Just path
   | otherwise              = search p frontier'' (explore st explored)
   where
-    mbf                    = headf frontier
+    mbf                    = headFrontier frontier
     Just (path, frontier') = mbf
     st                     = state path
     frontier''             = foldl' addFrontier frontier' $! makeChildren p path

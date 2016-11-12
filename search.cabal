@@ -18,6 +18,7 @@ library
   exposed-modules:     Control.Search
                      , Control.Search.BFS
                      , Control.Search.Internal.Frontier
+                     , Control.Search.Internal.QueueFrontier
                      , Control.Search.Internal.Path
                      , Control.Search.Internal.Queue
                      , Control.Search.Types

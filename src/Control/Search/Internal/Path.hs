@@ -2,7 +2,7 @@ module Control.Search.Internal.Path where
 
 data Path a b = Node a (Maybe b) (Maybe Integer)
               | Path a (Maybe b) (Maybe Integer) (Path a b)
-              deriving (Show, Eq, Ord)
+              deriving (Show, Eq)
 
 type Level a b = [Path a b]
 
