@@ -34,9 +34,16 @@ initProblem = Problem {
     _actions Bucharest = []
     _actions _         = [Drive]
 
-answer :: Answer
-answer =
+bfsAnswer :: Answer
+bfsAnswer =
   Path Bucharest (Just Drive) (Just 101) $
     Path Pitesti (Just Drive) (Just 40)  $
       Path Fagaras (Just Drive) (Just 99)  $
+        Node Sibiu Nothing Nothing
+
+dfsAnswer :: Answer
+dfsAnswer =
+  Path Bucharest (Just Drive) (Just 101) $
+    Path Pitesti (Just Drive) (Just 97)  $
+      Path RimnicuVilcea (Just Drive) (Just 80)  $
         Node Sibiu Nothing Nothing

@@ -17,10 +17,13 @@ library
   hs-source-dirs:      src
   exposed-modules:     Control.Search
                      , Control.Search.BFS
+                     , Control.Search.DFS
+                     , Control.Search.Internal.GraphSearch
+                     , Control.Search.Internal.Container
                      , Control.Search.Internal.Frontier
-                     , Control.Search.Internal.QueueFrontier
                      , Control.Search.Internal.Path
                      , Control.Search.Internal.Queue
+                     , Control.Search.Internal.Stack
                      , Control.Search.Types
   build-depends:       base >= 4.7 && < 5
                      , containers
@@ -37,10 +40,11 @@ executable search-exe
 test-suite search-test
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
-  other-modules:       UninformedSearch.Problem1
+  other-modules:       UninformedSearch.GetToBucharest 
+                     , UninformedSearch.Problem1
                      , UninformedSearch.Problem2
                      , UninformedSearch.TestBFS
-                     , UninformedSearch.GetToBucharest
+                     , UninformedSearch.TestDFS
   main-is:             Spec.hs
   build-depends:       base
                      , search
