@@ -18,7 +18,8 @@ library
   exposed-modules:     Control.Search
                      , Control.Search.BFS
                      , Control.Search.DFS
-                     , Control.Search.Internal.GraphSearch
+                     , Control.Search.Internal.Depth
+                     , Control.Search.Internal.DepthSearch
                      , Control.Search.Internal.Container
                      , Control.Search.Internal.Frontier
                      , Control.Search.Internal.Path
@@ -40,11 +41,12 @@ executable search-exe
 test-suite search-test
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
-  other-modules:       UninformedSearch.GetToBucharest 
+  other-modules:       UninformedSearch.GetToBucharest
                      , UninformedSearch.Problem1
                      , UninformedSearch.Problem2
                      , UninformedSearch.TestBFS
                      , UninformedSearch.TestDFS
+                     , UninformedSearch.TestDFSLimited
   main-is:             Spec.hs
   build-depends:       base
                      , search

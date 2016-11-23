@@ -1,6 +1,7 @@
 module UninformedSearch.Problem2 where
 
 import Control.Search.Internal.Path
+import Data.Word
 import UninformedSearch.GetToBucharest
 
 initProblem :: GetToBucharest
@@ -47,3 +48,7 @@ dfsAnswer =
     Path Pitesti (Just Drive) (Just 97)  $
       Path RimnicuVilcea (Just Drive) (Just 80)  $
         Node Sibiu Nothing Nothing
+
+depthAnswer :: Word32 -> Maybe Answer
+depthAnswer 3 = Just dfsAnswer
+depthAnswer _ = Nothing
