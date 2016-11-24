@@ -22,9 +22,11 @@ library
                      , Control.Search.Internal.DepthSearch
                      , Control.Search.Internal.Container
                      , Control.Search.Internal.Frontier
+                     , Control.Search.Internal.MapSet
                      , Control.Search.Internal.Path
                      , Control.Search.Internal.Queue
                      , Control.Search.Internal.Stack
+                     , Control.Search.Internal.Weights
                      , Control.Search.Types
   build-depends:       base >= 4.7 && < 5
                      , containers

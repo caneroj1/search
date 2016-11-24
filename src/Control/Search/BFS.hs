@@ -16,7 +16,7 @@ import Data.Maybe
 bfs :: (Searchable a) => a -> Maybe (Path (State a) (Action a))
 bfs p = search p (frontier p) emptySet
   where
-    is       p = E $ Node (initialState p) Nothing Nothing
+    is       p = E $ Node (initialState p) Nothing 0
     frontier :: (Searchable a) => a -> Frontier Queue (State a) (Action a)
     frontier p = mkFrontier `addFrontier` is p
 

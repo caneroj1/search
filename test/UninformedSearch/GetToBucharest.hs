@@ -20,7 +20,7 @@ data Location = Sibiu
 data Drive = Drive deriving (Ord, Eq, Show)
 
 data GetToBucharest = Problem {
-    costFn   :: Location -> Drive -> Location -> Maybe Integer
+    costFn   :: Location -> Drive -> Location -> Cost
   , followFn :: Location -> Drive -> [Location]
   , goalFn   :: Location -> Bool
   , actionFn :: Location -> [Drive]

@@ -1,9 +1,13 @@
 {-# LANGUAGE TypeFamilies     #-}
 {-# LANGUAGE FlexibleContexts #-}
 
-module Control.Search.Types where
+module Control.Search.Types
+(
+  Cost
+, Searchable(..)
+) where
 
-type Cost = Maybe Integer
+import Control.Search.Internal.Path (Cost)
 
 class (Ord (State a), Ord (Action a)) => Searchable a where
   -- | Associated type that represents the type of States in the problem space.

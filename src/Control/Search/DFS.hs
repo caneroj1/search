@@ -25,7 +25,7 @@ dfs = dfsLimited NoLimit
 dfsLimited :: (Searchable a) => Depth -> a -> Maybe (Path (State a) (Action a))
 dfsLimited d p = depthSearch p d (frontier p) emptySet
   where
-    is       p = WD (0, Node (initialState p) Nothing Nothing)
+    is       p = WD (0, Node (initialState p) Nothing 0)
     frontier :: (Searchable a) => a -> Frontier Stack (State a) (Action a)
     frontier p = mkFrontier `addFrontier` is p
 
