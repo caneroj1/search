@@ -55,3 +55,6 @@ depthAnswer :: Word32 -> Maybe Answer
 depthAnswer 3 = Just dfsAnswer
 depthAnswer 2 = Just dfsLimitedAnswer
 depthAnswer _ = Nothing
+
+ucsAnswer :: Answer
+ucsAnswer = dfsAnswer

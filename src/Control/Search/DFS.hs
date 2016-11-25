@@ -8,16 +8,12 @@ module Control.Search.DFS
 ) where
 
 import Control.Applicative
-import Control.Monad
 import Control.Search.Internal.Depth
 import Control.Search.Internal.DepthSearch
 import Control.Search.Internal.Path
 import Control.Search.Internal.Frontier
 import Control.Search.Internal.Stack
 import Control.Search.Types
-import Data.List
-import Data.Maybe
-import Data.Word
 
 dfs :: (Searchable a) => a -> Maybe (Path (State a) (Action a))
 dfs = dfsLimited NoLimit

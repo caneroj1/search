@@ -3,7 +3,6 @@ module Control.Search.BFS
   bfs
 ) where
 
-import Control.Monad
 import Control.Search.Internal.Container
 import Control.Search.Internal.DepthSearch (isAtGoal)
 import Control.Search.Internal.Path

@@ -5,7 +5,7 @@ module Control.Search.Internal.Weights
   Weights
 , mkWeights
 , next
--- , maybeAdd
+, maybeAdd
 ) where
 
 import           Control.Search.Internal.MapSet (MapSet)
@@ -19,26 +19,26 @@ mkWeights :: (Ord a, Ord b) => Weights a b
 mkWeights = Weights MS.empty M.empty
 
 data Weights a b = Weights {
-    weightToVMapSet :: MapSet Double (Path a b)
-  , vToWeightMap    :: Map (Path a b) Double
+    weightToVMapSet :: MapSet Double (WeightedPath a b)
+  , vToWeightMap    :: Map (WeightedPath a b) Double
   }
 
-next :: (Ord a, Ord b) => Weights a b -> Maybe (Path a b, Weights a b)
+next :: (Ord a, Ord b) => Weights a b -> Maybe (WeightedPath a b, Weights a b)
 next Weights{..} =
   updateWeights <$> MS.minView weightToVMapSet
   where
     updateWeights (mn, weightsSet) =
       (mn, Weights weightsSet $ M.delete mn vToWeightMap)
 
--- maybeAdd :: (Ord a, Ord b) => Path a b -> Weights a b -> Weights a b
--- maybeAdd w v ws@Weights{..}
---   | isNothing mw =
---     Weights (insert w v weightToVMapSet)
---             (M.insert v w vToWeightMap)
---   | w >= prev    = ws
---   | otherwise    =
---     Weights (insert w v $ delete prev v weightToVMapSet)
---             (M.update (\_ -> Just w) v vToWeightMap)
---   where
---     mw        = M.lookup v vToWeightMap
---     Just prev = mw
+maybeAdd :: (Ord a, Ord b) => WeightedPath a b -> Weights a b -> Weights a b
+maybeAdd w@(WP c _) ws@Weights{..}
+  | isNothing mw =
+    Weights (MS.insert c w weightToVMapSet)
+            (M.insert w c vToWeightMap)
+  | c >= prev    = ws
+  | otherwise    =
+    Weights (MS.insert c w $ MS.delete prev w weightToVMapSet)
+            (M.update (\_ -> Just c) w vToWeightMap)
+  where
+    mw        = M.lookup w vToWeightMap
+    Just prev = mw

@@ -52,3 +52,9 @@ dfsAnswer =
 depthAnswer :: Word32 -> Maybe Answer
 depthAnswer 3 = Just dfsAnswer
 depthAnswer _ = Nothing
+
+ucsAnswer :: Answer
+ucsAnswer =
+  Path Bucharest (Just Drive) 101 $
+      Path Fagaras (Just Drive) 99 $
+        Node Sibiu Nothing 0

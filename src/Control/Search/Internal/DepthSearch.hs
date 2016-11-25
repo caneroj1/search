@@ -7,7 +7,6 @@ module Control.Search.Internal.DepthSearch
 , isAtDepthLimit
 ) where
 
-import Control.Monad
 import Control.Search.Internal.Depth
 import Control.Search.Internal.Path
 import Control.Search.Internal.Frontier
