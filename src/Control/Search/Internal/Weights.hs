@@ -2,7 +2,7 @@
 
 module Control.Search.Internal.Weights
 (
-  Weights
+  Weights(..)
 , mkWeights
 , next
 , maybeAdd
@@ -38,7 +38,7 @@ maybeAdd w@(WP c _) ws@Weights{..}
   | c >= prev    = ws
   | otherwise    =
     Weights (MS.insert c w $ MS.delete prev w weightToVMapSet)
-            (M.update (\_ -> Just c) w vToWeightMap)
+            (M.insert w c $ M.delete w vToWeightMap)
   where
     mw        = M.lookup w vToWeightMap
     Just prev = mw

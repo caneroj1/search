@@ -11,6 +11,8 @@ unitTests = TestCase canAddToEmptyMapSet                  :
             TestCase canAddMultipleItemsWithTheSameWeight :
             TestCase canAddItemWithAnotherKey             :
             TestCase canDeleteItemFromMapSet              :
+            TestCase deletingOnlyItemFromSetRemovesKey    :
+            TestCase deletingNonExistentKeyDoesNothing    :
             minViewTests
 
 mapSet :: MS.MapSet Int Char
@@ -24,25 +26,37 @@ canAddToEmptyMapSet :: Assertion
 canAddToEmptyMapSet =
   assertEqual "Could not add (W=10, V='c') to empty MapSet"
     [(10, ['c'])]
-    (MS.elems baseMapSet)
+    (MS.toList baseMapSet)
 
 canAddMultipleItemsWithTheSameWeight :: Assertion
 canAddMultipleItemsWithTheSameWeight =
   assertEqual "Could not add other items to base MapSet"
     [(10, ['c', 'd', 'e'])]
-    (MS.elems nextMapSet)
+    (MS.toList nextMapSet)
 
 canAddItemWithAnotherKey :: Assertion
 canAddItemWithAnotherKey =
   assertEqual "Could not add (W=7, V='a') to MapSet"
   [(7, ['a']), (10, ['c', 'd', 'e'])]
-  (MS.elems mapSet3)
+  (MS.toList mapSet3)
+
+deletingNonExistentKeyDoesNothing :: Assertion
+deletingNonExistentKeyDoesNothing =
+  assertEqual "Deleting a non-existent key changed the MapSet"
+  baseMapSet
+  (MS.delete 10 'f' baseMapSet)
+
+deletingOnlyItemFromSetRemovesKey :: Assertion
+deletingOnlyItemFromSetRemovesKey =
+  assertEqual "Could not delete key when only item in set was removed"
+    []
+    (MS.toList $ MS.delete 10 'c' baseMapSet)
 
 canDeleteItemFromMapSet :: Assertion
 canDeleteItemFromMapSet =
   assertEqual "Could not delete item from MapSet"
     [(10, ['c', 'e'])]
-    (MS.elems $ MS.delete 10 'd' nextMapSet)
+    (MS.toList $ MS.delete 10 'd' nextMapSet)
 
 minViewTests :: [Test]
 minViewTests =
@@ -59,7 +73,7 @@ minViewIsCorrectWithTwoKeys =
     mapElems == [(10, ['c', 'd', 'e'])]
   where
     Just (minElem, ms) = MS.minView mapSet3
-    mapElems           = MS.elems ms
+    mapElems           = MS.toList ms
 
 minViewIsCorrectWithOneKey :: Assertion
 minViewIsCorrectWithOneKey =
@@ -68,7 +82,7 @@ minViewIsCorrectWithOneKey =
     mapElems == [(10, ['d', 'e'])]
   where
     Just (minElem, ms) = MS.minView nextMapSet
-    mapElems           = MS.elems ms
+    mapElems           = MS.toList ms
 
 minViewIsNothingIfEmpty :: Assertion
 minViewIsNothingIfEmpty =

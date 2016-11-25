@@ -56,5 +56,7 @@ depthAnswer _ = Nothing
 ucsAnswer :: Answer
 ucsAnswer =
   Path Bucharest (Just Drive) 101 $
-      Path Fagaras (Just Drive) 99 $
-        Node Sibiu Nothing 0
+    Path Pitesti (Just Drive) 40 $
+      Path Fagaras (Just Drive) 10 $
+        Path RimnicuVilcea (Just Drive) 80 $
+          Node Sibiu Nothing 0

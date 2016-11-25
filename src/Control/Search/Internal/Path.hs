@@ -6,7 +6,7 @@ data Path a b = Node a (Maybe b) Cost
               | Path a (Maybe b) Cost (Path a b)
               deriving (Show, Eq)
 
-data WeightedPath a b = WP Cost (Path a b)
+data WeightedPath a b = WP Cost (Path a b) deriving Show
 
 type Level a b = [Path a b]
 type WeightedLevel a b = [WeightedPath a b]

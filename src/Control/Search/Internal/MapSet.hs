@@ -8,7 +8,7 @@ module Control.Search.Internal.MapSet
 , minView
 , insert
 , delete
-, elems
+, toList
 ) where
 
 import           Data.Map.Strict (Map)
@@ -43,10 +43,10 @@ delete :: (Ord k, Ord v) => k -> v -> MapSet k v -> MapSet k v
 delete k v = MapSet . M.update mkNewSet k . unMapSet
   where
     mkNewSet s
-      | S.null s  = Nothing
+      | S.null s' = Nothing
       | otherwise = Just s'
       where s' = S.delete v s
 
-elems :: MapSet k v -> [(k, [v])]
-elems = map getElemsFromSet . M.toList . unMapSet
+toList :: MapSet k v -> [(k, [v])]
+toList = map getElemsFromSet . M.toList . unMapSet
   where getElemsFromSet (k, set) = (k, S.elems set)
