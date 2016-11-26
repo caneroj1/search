@@ -7,10 +7,13 @@ import UninformedSearch.TestDFSLimited
 import UninformedSearch.TestGreedy
 import UninformedSearch.TestUCS
 import qualified UnitTests.MapSetUnitTests as MS
+import qualified UnitTests.PathFunctionsUnitTests as PS
 import qualified UnitTests.WeightsUnitTests as WS
 
 unitTests :: Test
-unitTests = TestList $ MS.unitTests ++ WS.unitTests
+unitTests = TestList $ MS.unitTests ++
+                       WS.unitTests ++
+                       PS.unitTests
 
 runTests :: IO ()
 runTests = void $ runTestTT unitTests

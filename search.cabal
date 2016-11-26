@@ -31,6 +31,7 @@ library
                      , Control.Search.Internal.Stack
                      , Control.Search.Internal.UniformCostSearch
                      , Control.Search.Internal.Weights
+                     , Control.Search.PathFunctions
                      , Control.Search.Types
   build-depends:       base >= 4.7 && < 5
                      , containers
@@ -57,6 +58,7 @@ test-suite search-test
                      , UninformedSearch.TestGreedy
                      , UninformedSearch.TestUCS
                      , UnitTests.MapSetUnitTests
+                     , UnitTests.PathFunctionsUnitTests
                      , UnitTests.WeightsUnitTests
   main-is:             Spec.hs
   build-depends:       base
