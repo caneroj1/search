@@ -50,9 +50,11 @@ test-suite search-test
   other-modules:       UninformedSearch.GetToBucharest
                      , UninformedSearch.Problem1
                      , UninformedSearch.Problem2
+                     , UninformedSearch.TestAStar
                      , UninformedSearch.TestBFS
                      , UninformedSearch.TestDFS
                      , UninformedSearch.TestDFSLimited
+                     , UninformedSearch.TestGreedy
                      , UninformedSearch.TestUCS
                      , UnitTests.MapSetUnitTests
                      , UnitTests.WeightsUnitTests

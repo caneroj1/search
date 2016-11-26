@@ -32,5 +32,5 @@ costBasedSearch :: (Ord state, Ord action)
                 -> Maybe (Path state action)
 costBasedSearch p settings = uniformCostSearch p settings (frontier p) empty
   where
-    is       p = WP 0 $ Node (initialState p) Nothing 0
+    is       p = WP 0 0 $ Node (initialState p) Nothing 0
     frontier p = maybeAdd (is p) mkWeights

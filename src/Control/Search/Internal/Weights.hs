@@ -31,7 +31,7 @@ next Weights{..} =
       (mn, Weights weightsSet $ M.delete mn vToWeightMap)
 
 maybeAdd :: (Ord a, Ord b) => WeightedPath a b -> Weights a b -> Weights a b
-maybeAdd w@(WP c _) ws@Weights{..}
+maybeAdd w@(WP c _ _) ws@Weights{..}
   | isNothing mw =
     Weights (MS.insert c w weightToVMapSet)
             (M.insert w c vToWeightMap)

@@ -18,7 +18,7 @@ unitTests = TestCase canAddToEmptyWeights             :
             canGetGetNextFromWeights
 
 toWP :: Cost -> Char -> Char -> WeightedPath Char Char
-toWP cost c1 c2 = WP cost (Node c1 (Just c2) cost)
+toWP cost c1 c2 = WP cost 0 (Node c1 (Just c2) cost)
 
 emptyWeights :: Weights Char Char
 emptyWeights = mkWeights

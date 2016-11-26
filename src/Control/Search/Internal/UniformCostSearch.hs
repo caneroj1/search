@@ -40,21 +40,22 @@ makeChildren :: Searchable state action
 makeChildren p settings wpath = do
   a <- actions p st
   s <- follows p st a
-  let nc = costFunction p st a s
-      pc = pathCost wpath
-      tc = getNodeCost settings p st s a + pc
-    in [WP tc (Node s (Just a) nc -+- path)]
+  let nc  = costFunction p st a s
+      pc  = totalPathCost wpath
+      twc = getWeightedCost settings p st s a + pc
+      tc  = nc + pc
+    in [WP twc tc (Node s (Just a) nc -+- path)]
   where
     st   = state path
     path = unwrap wpath
 
-getNodeCost :: CostSettings
-            -> Searchable state action
-            -> state
-            -> state
-            -> action
-            -> Cost
-getNodeCost CostOnly      p st next a = costFunction p st a next
-getNodeCost HeuristicOnly p st next a = heuristic p next
-getNodeCost AStar         p st next a = costFunction p st a next +
-                                        heuristic p next
+getWeightedCost :: CostSettings
+                -> Searchable state action
+                -> state
+                -> state
+                -> action
+                -> Cost
+getWeightedCost CostOnly      p st next a = costFunction p st a next
+getWeightedCost HeuristicOnly p st next a = heuristic p next
+getWeightedCost AStar         p st next a = costFunction p st a next +
+                                            heuristic p next

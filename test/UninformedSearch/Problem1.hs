@@ -49,10 +49,7 @@ dfsAnswer =
         Node Sibiu Nothing 0
 
 dfsLimitedAnswer :: Answer
-dfsLimitedAnswer =
-  Path Bucharest (Just Drive) 211 $
-      Path Fagaras (Just Drive) 99 $
-        Node Sibiu Nothing 0
+dfsLimitedAnswer = bfsAnswer
 
 depthAnswer :: Word32 -> Maybe Answer
 depthAnswer 3 = Just dfsAnswer
@@ -61,3 +58,9 @@ depthAnswer _ = Nothing
 
 ucsAnswer :: Answer
 ucsAnswer = dfsAnswer
+
+greedyAnswer :: Answer
+greedyAnswer = dfsLimitedAnswer
+
+aStarAnswer :: Answer
+aStarAnswer = ucsAnswer
