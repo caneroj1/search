@@ -18,3 +18,10 @@ data Location = Sibiu
 data Drive = Drive deriving (Ord, Eq, Show)
 
 type GetToBucharest = Searchable Location Drive
+
+sldHeuristic :: Location -> Cost
+sldHeuristic Sibiu         = 253
+sldHeuristic Fagaras       = 176
+sldHeuristic RimnicuVilcea = 193
+sldHeuristic Pitesti       = 100
+sldHeuristic Bucharest     = 0

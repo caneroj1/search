@@ -24,7 +24,7 @@ initProblem =
     _costs Pitesti Drive Bucharest     = 101
     _costs _ _ _                       = error "Invalid Cost"
 
-    _heuristic _ = 0
+    _heuristic = sldHeuristic
 
     _follow Sibiu         Drive = [Fagaras,       RimnicuVilcea]
     _follow Fagaras       Drive = [RimnicuVilcea, Pitesti]

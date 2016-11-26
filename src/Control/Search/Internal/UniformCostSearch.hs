@@ -40,9 +40,9 @@ makeChildren :: Searchable state action
 makeChildren p settings wpath = do
   a <- actions p st
   s <- follows p st a
-  let nc = getNodeCost settings p st s a
+  let nc = costFunction p st a s
       pc = pathCost wpath
-      tc = nc + pc
+      tc = getNodeCost settings p st s a + pc
     in [WP tc (Node s (Just a) nc -+- path)]
   where
     st   = state path
