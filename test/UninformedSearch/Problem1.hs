@@ -1,17 +1,18 @@
 module UninformedSearch.Problem1 where
 
+import Control.Search.Types
 import Control.Search.Internal.Path
 import Data.Word
 import UninformedSearch.GetToBucharest
 
 initProblem :: GetToBucharest
-initProblem = Problem {
-    costFn   = _costs
-  , followFn = _follow
-  , goalFn   = _goal
-  , actionFn = _actions
-  , initial  = Sibiu
-  }
+initProblem =
+  Problem _costs
+          _heuristic
+          _follow
+          _goal
+          _actions
+          Sibiu
   where
     _costs Sibiu Drive Fagaras         = 99
     _costs Sibiu Drive RimnicuVilcea   = 80
@@ -19,6 +20,8 @@ initProblem = Problem {
     _costs RimnicuVilcea Drive Pitesti = 97
     _costs Pitesti Drive Bucharest     = 101
     _costs _ _ _                       = error "Invalid Cost"
+
+    _heuristic _ = 0
 
     _follow Sibiu         Drive = [Fagaras, RimnicuVilcea]
     _follow Fagaras       Drive = [Bucharest]

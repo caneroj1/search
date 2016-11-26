@@ -8,17 +8,15 @@ module Control.Search.Internal.DepthSearch
 ) where
 
 import Control.Search.Internal.Depth
+import Control.Search.Internal.ExploredSet
 import Control.Search.Internal.Path
 import Control.Search.Internal.Frontier
+import Control.Search.Internal.SearchUtils
 import Control.Search.Internal.Stack
 import Control.Search.Types
 import Data.List
 import Data.Maybe
 import Data.Word
-
-isAtGoal :: (Searchable a) => Path (State a) (Action a) -> a -> Bool
-isAtGoal (Node a _ _)   = goal a
-isAtGoal (Path a _ _ _) = goal a
 
 -- move this stuff to general graph search utils?
 -- graphSearch :: (Searchable a, Container c)
@@ -41,14 +39,13 @@ isAtGoal (Path a _ _ _) = goal a
 --     frontier''             = foldl' addFrontier frontier' $! makeChildren p path
 --     explored'              = explore st explored
 
-makeChildren :: (Searchable a)
-             => a
-             -> Path (State a) (Action a)
-             -> Level (State a) (Action a)
+makeChildren :: Searchable state action
+             -> Path state action
+             -> Level state action
 makeChildren p path = do
-  a <- actions st p
-  s <- follows st a p
-  let nc = cost st a s p
+  a <- actions p st
+  s <- follows p st a
+  let nc = costFunction p st a s
     in [Node s (Just a) nc -+- path]
   where
     st = state path
@@ -57,16 +54,16 @@ isAtDepthLimit :: Word32 -> Depth -> Bool
 isAtDepthLimit _ NoLimit     = False
 isAtDepthLimit n (Limited d) = n == d
 
-depthSearch :: (Searchable a)
-            => a
+depthSearch :: (Ord state)
+            => Searchable state action
             -> Depth
-            -> Frontier Stack (State a) (Action a)
-            -> ExploredSet a
-            -> Maybe (Path (State a) (Action a))
+            -> Frontier Stack state action
+            -> ExploredSet state
+            -> Maybe (Path state action)
 depthSearch p d frontier explored
   | isNothing mbf          = Nothing
   | isExplored st explored = depthSearch p d frontier' explored
-  | isAtGoal path p        = Just path
+  | isAtGoal p path        = Just path
   | isAtDepthLimit cd d    = depthSearch p d frontier' explored'
   | otherwise              = depthSearch p d frontier'' explored'
   where

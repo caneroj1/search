@@ -23,7 +23,7 @@ test :: Int -> Word32 -> GetToBucharest -> (Word32 -> Maybe Answer) -> IO ()
 test i d p answerFn = do
   putStrLn    "\n"
   putStrLn $  "Testing DFSLimited [" ++ show i ++ "] [Depth " ++ show d ++ "]"
-  let mbSolution = dfsLimited (targetDepth d) p
+  let mbSolution = dfsLimited p (targetDepth d)
       mbAnswer   = answerFn d
   if mbAnswer /= mbSolution
     then do

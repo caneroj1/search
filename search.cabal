@@ -20,11 +20,13 @@ library
                      , Control.Search.DFS
                      , Control.Search.Internal.Depth
                      , Control.Search.Internal.DepthSearch
+                     , Control.Search.Internal.ExploredSet
                      , Control.Search.Internal.Container
                      , Control.Search.Internal.Frontier
                      , Control.Search.Internal.MapSet
                      , Control.Search.Internal.Path
                      , Control.Search.Internal.Queue
+                     , Control.Search.Internal.SearchUtils
                      , Control.Search.Internal.Stack
                      , Control.Search.Internal.UniformCostSearch
                      , Control.Search.Internal.Weights

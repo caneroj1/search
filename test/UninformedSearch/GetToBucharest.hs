@@ -1,5 +1,3 @@
-{-# LANGUAGE TypeFamilies #-}
-
 module UninformedSearch.GetToBucharest where
 
 import Control.Search.Internal.Path
@@ -19,25 +17,4 @@ data Location = Sibiu
 
 data Drive = Drive deriving (Ord, Eq, Show)
 
-data GetToBucharest = Problem {
-    costFn   :: Location -> Drive -> Location -> Cost
-  , followFn :: Location -> Drive -> [Location]
-  , goalFn   :: Location -> Bool
-  , actionFn :: Location -> [Drive]
-  , initial  :: Location
-  }
-
-instance Searchable GetToBucharest where
-  type State  GetToBucharest      = Location
-  type Action GetToBucharest      = Drive
-  data ExploredSet GetToBucharest = SMap (Set Location)
-
-  isExplored l (SMap s) = Set.member l s
-  explore l (SMap a)    = SMap $ Set.insert l a
-  emptySet              = SMap Set.empty
-
-  cost s1 a s2 p = costFn p s1 a s2
-  follows s a p  = followFn p s a
-  goal s p       = goalFn p s
-  actions s p    = actionFn p s
-  initialState   = initial
+type GetToBucharest = Searchable Location Drive

@@ -1,52 +1,49 @@
-{-# LANGUAGE TypeFamilies     #-}
-{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE GADTs #-}
 
 module Control.Search.Types
 (
   Cost
 , Searchable(..)
+, costFunction
+, heuristic
+, follows
+, goal
+, actions
+, initialState
 ) where
 
 import Control.Search.Internal.Path (Cost)
 
-class (Ord (State a), Ord (Action a)) => Searchable a where
-  -- | Associated type that represents the type of States in the problem space.
-  type State a
+type CostFunction state action = state -> action -> state -> Cost
+type Heuristic state = state -> Cost
+type Follows state action = state -> action -> [state]
+type Goal state = state -> Bool
+type Actions state action = state -> [action]
 
-  -- | Associated type that represents the actions that can be performed in the
-  -- problem space.
-  type Action a
+data Searchable state action where
+  Problem :: (Ord state, Ord action)
+          => CostFunction state action
+          -> Heuristic state
+          -> Follows state action
+          -> Goal state
+          -> Actions state action
+          -> state
+          -> Searchable state action
 
-  -- | Associated data type that determines which data structure to use
-  -- to efficiently check if a state in the problem space has already been
-  -- explored.
-  data ExploredSet a :: *
+costFunction :: Searchable state action -> CostFunction state action
+costFunction (Problem c _ _ _ _ _) = c
 
-  -- | isExplored is a function to determine whether a state has been explored.
-  isExplored :: State a -> ExploredSet a -> Bool
+heuristic :: Searchable state action -> Heuristic state
+heuristic (Problem _ h _ _ _ _) = h
 
-  -- | explore is a function that should add the given state to the ExploredSet.
-  explore :: State a -> ExploredSet a -> ExploredSet a
+follows :: Searchable state action -> Follows state action
+follows (Problem _ _ f _ _ _) = f
 
-  -- | function to make an empty ExploredSet.
-  emptySet :: ExploredSet a
+goal :: Searchable state action -> Goal state
+goal (Problem _ _ _ g _ _) = g
 
-  -- | cost is a function that should return, given the current state, an action
-  -- to be performed on that state, and the state that is the result of that
-  -- action, the cost of doing that action.
-  cost :: State a -> Action a -> State a -> a -> Cost
+actions :: Searchable state action -> Actions state action
+actions (Problem _ _ _ _ a _) = a
 
-  -- | follows is a function that, given a state and an action to be performed
-  -- on that state, returns a new list of states.
-  follows :: State a -> Action a -> a -> [State a]
-
-  -- | goal is a function should tell you whether or not the current state
-  -- is a goal state
-  goal :: State a -> a -> Bool
-
-  -- | actions is a function that maps each state to the list of actions
-  -- that can be performed on that state.
-  actions :: State a -> a -> [Action a]
-
-  -- | the starting state of the problem.
-  initialState :: a -> State a
+initialState :: Searchable state action -> state
+initialState (Problem _ _ _ _ _ i) = i

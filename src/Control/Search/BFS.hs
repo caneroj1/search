@@ -5,6 +5,8 @@ module Control.Search.BFS
 
 import Control.Search.Internal.Container
 import Control.Search.Internal.DepthSearch (isAtGoal)
+import Control.Search.Internal.ExploredSet
+import qualified Control.Search.Internal.ExploredSet as E (empty)
 import Control.Search.Internal.Path
 import Control.Search.Internal.Frontier
 import Control.Search.Internal.Queue
@@ -12,18 +14,18 @@ import Control.Search.Types
 import Data.List
 import Data.Maybe
 
-bfs :: (Searchable a) => a -> Maybe (Path (State a) (Action a))
-bfs p = search p (frontier p) emptySet
+bfs :: (Ord state)
+    => Searchable state action
+    -> Maybe (Path state action)
+bfs p = search p (mkFrontier `addFrontier` is p) E.empty
   where
     is       p = E $ Node (initialState p) Nothing 0
-    frontier :: (Searchable a) => a -> Frontier Queue (State a) (Action a)
-    frontier p = mkFrontier `addFrontier` is p
 
-search :: (Searchable a)
-         => a
-         -> Frontier Queue (State a) (Action a)
-         -> ExploredSet a
-         -> Maybe (Path (State a) (Action a))
+search :: (Ord state)
+        => Searchable state action
+        -> Frontier Queue state action
+        -> ExploredSet state
+        -> Maybe (Path state action)
 search p frontier explored
   | isNothing mbf          = Nothing
   | isExplored st explored = search p frontier' explored
@@ -37,17 +39,16 @@ search p frontier explored
     mkFrontier           = foldl' addFrontier frontier'
     doNextSearch cs      = search p (mkFrontier cs) (explore st explored)
 
-makeChildren :: (Searchable a)
-             => a
-             -> Path (State a) (Action a)
-             -> Either (Path (State a) (Action a))
-                       [ContainerElem (Path (State a) (Action a))]
+makeChildren :: Searchable state action
+             -> Path state action
+             -> Either (Path state action)
+                       [ContainerElem (Path state action)]
 makeChildren p path = sequence $ do
-  a <- actions st p
-  s <- follows st a p
-  let nc    = cost st a s p
+  a <- actions p st
+  s <- follows p st a
+  let nc    = costFunction p st a s
       path' = Node s (Just a) nc -+- path
-  if isAtGoal path' p then
+  if isAtGoal p path' then
     [Left path']      else
     [Right $ E path']
   where

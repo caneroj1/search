@@ -3,24 +3,25 @@ module Control.Search.Internal.UniformCostSearch
   uniformCostSearch
 ) where
 
+import Control.Search.Internal.ExploredSet
 import Control.Search.Internal.Path
 import Control.Search.Internal.Weights
 import Control.Search.Types
 import Data.Maybe
 
-isAtGoal :: (Searchable a) => Path (State a) (Action a) -> a -> Bool
-isAtGoal (Node a _ _)   = goal a
-isAtGoal (Path a _ _ _) = goal a
+isAtGoal :: Searchable state action -> Path state action -> Bool
+isAtGoal s (Node a _ _)   = goal s a
+isAtGoal s (Path a _ _ _) = goal s a
 
-uniformCostSearch :: (Searchable a)
-                  => a
-                  -> Weights (State a) (Action a)
-                  -> ExploredSet a
-                  -> Maybe (Path (State a) (Action a))
+uniformCostSearch :: (Ord state, Ord action)
+                  => Searchable state action
+                  -> Weights state action
+                  -> ExploredSet state
+                  -> Maybe (Path state action)
 uniformCostSearch p frontier explored
   | isNothing mbf          = Nothing
   | isExplored st explored = uniformCostSearch p frontier' explored
-  | isAtGoal path p        = Just path
+  | isAtGoal p path        = Just path
   | otherwise              = uniformCostSearch p frontier'' explored'
   where
     mbf                     = next frontier
@@ -30,14 +31,13 @@ uniformCostSearch p frontier explored
     frontier''              = foldr maybeAdd frontier' $! makeChildren p wpath
     explored'               = explore st explored
 
-makeChildren :: (Searchable a)
-             => a
-             -> WeightedPath (State a) (Action a)
-             -> WeightedLevel (State a) (Action a)
+makeChildren :: Searchable state action
+             -> WeightedPath state action
+             -> WeightedLevel state action
 makeChildren p wpath = do
-  a <- actions st p
-  s <- follows st a p
-  let nc = cost st a s p
+  a <- actions p st
+  s <- follows p st a
+  let nc = costFunction p st a s
       pc = pathCost wpath
       tc = nc + pc
     in [WP tc (Node s (Just a) nc -+- path)]
