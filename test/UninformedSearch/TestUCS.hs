@@ -16,7 +16,7 @@ test :: Int -> GetToBucharest -> Answer -> IO ()
 test i p answer = do
   putStrLn    "\n"
   putStrLn $  "Testing UCS [" ++ show i ++ "]"
-  case ucs p of
+  case uniform p of
     Nothing -> putStrLn "Failure! No solution found!"
     Just p  -> if p /= answer
                 then do

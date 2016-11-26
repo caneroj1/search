@@ -4,6 +4,7 @@ module Control.Search.Types
 (
   Cost
 , Searchable(..)
+, CostSettings(..)
 , costFunction
 , heuristic
 , follows
@@ -29,6 +30,10 @@ data Searchable state action where
           -> Actions state action
           -> state
           -> Searchable state action
+
+data CostSettings = CostOnly
+                  | HeuristicOnly
+                  | AStar
 
 costFunction :: Searchable state action -> CostFunction state action
 costFunction (Problem c _ _ _ _ _) = c

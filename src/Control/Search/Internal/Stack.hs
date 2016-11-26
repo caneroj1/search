@@ -15,23 +15,23 @@ newtype WithDepth a = WD {
     unWD :: (Word32, a)
   }
 
-data Stack a = Stack Word32 (WithDepth a) (Stack a)
+data Stack a = Stack (WithDepth a) (Stack a)
              | Empty
 
 sempty :: Stack a
 sempty = Empty
 
 sinsert :: WithDepth a -> Stack a -> Stack a
-sinsert a s@(Stack d ls _) = Stack (d + 1) a s
-sinsert a Empty            = Stack 0 a Empty
+sinsert a s@(Stack ls _) = Stack a s
+sinsert a Empty          = Stack a Empty
 
 snull :: Stack a -> Bool
 snull Empty   = True
 snull Stack{} = False
 
 spop :: Stack a -> Maybe (WithDepth a, Stack a)
-spop (Stack _ a s) = Just (a, s)
-spop Empty         = Nothing
+spop (Stack a s) = Just (a, s)
+spop Empty       = Nothing
 
 instance Container Stack where
   type Elem Stack = WithDepth

@@ -1,7 +1,7 @@
 module UninformedSearch.Problem1 where
 
-import Control.Search.Types
 import Control.Search.Internal.Path
+import Control.Search.Types
 import Data.Word
 import UninformedSearch.GetToBucharest
 
