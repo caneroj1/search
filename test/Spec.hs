@@ -5,6 +5,7 @@ import UninformedSearch.TestBFS
 import UninformedSearch.TestDFS
 import UninformedSearch.TestDFSLimited
 import UninformedSearch.TestGreedy
+import UninformedSearch.TestSlidingBlock
 import UninformedSearch.TestUCS
 import qualified UnitTests.MapSetUnitTests as MS
 import qualified UnitTests.PathFunctionsUnitTests as PS
@@ -19,10 +20,11 @@ runTests :: IO ()
 runTests = void $ runTestTT unitTests
 
 main :: IO ()
-main = testAStar      >>
-       testBFS        >>
-       testDFS        >>
-       testDFSLimited >>
-       testGreedy     >>
-       testUCS        >>
-       runTests
+main = testSlidingBlock
+-- main = testAStar      >>
+--        testBFS        >>
+--        testDFS        >>
+--        testDFSLimited >>
+--        testGreedy     >>
+--        testUCS        >>
+--        runTests
