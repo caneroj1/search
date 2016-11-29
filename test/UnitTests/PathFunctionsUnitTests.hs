@@ -5,7 +5,7 @@ module UnitTests.PathFunctionsUnitTests
 
 import qualified Control.Search.Internal.Path as P
 import qualified Control.Search
-import qualified UninformedSearch.GetToBucharest as B
+import qualified SearchTests.Problems.GetToBucharest as B
 import Test.HUnit.Base
 
 unitTests :: [Test]

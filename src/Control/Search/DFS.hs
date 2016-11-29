@@ -17,29 +17,29 @@ import Control.Search.Internal.Stack
 import Control.Search.Types
 
 dfs :: (Ord state) => Searchable state action -> Maybe (Path state action)
-dfs p = dfsLimited p NoLimit
+dfs = dfsLimited NoLimit
 
 dfsLimited :: (Ord state)
-           => Searchable state action
-           -> Depth
+           => Depth
+           -> Searchable state action
            -> Maybe (Path state action)
-dfsLimited p d = depthSearch p d (mkFrontier `addFrontier` is p) E.empty
+dfsLimited d p = depthSearch p d (mkFrontier `addFrontier` is p) E.empty
   where
     is       p = WD (0, Node (initialState p) Nothing 0)
 
 iterativeDeepening :: (Ord state)
                    => Searchable state action
                    -> Maybe (Path state action)
-iterativeDeepening p = iterativeDeepeningLimited p NoLimit
+iterativeDeepening = iterativeDeepeningLimited NoLimit
 
 iterativeDeepeningLimited :: (Ord state)
-                          => Searchable state action
-                          -> Depth
+                          => Depth
+                          -> Searchable state action
                           -> Maybe (Path state action)
-iterativeDeepeningLimited p md = go initialDepth p
+iterativeDeepeningLimited md = go initialDepth
   where
     go d p
-      | isAtDepthLimit d md = dfsLimited p cd
-      | otherwise           = dfsLimited p cd <|> go (d+1) p
+      | isAtDepthLimit d md = dfsLimited cd p
+      | otherwise           = dfsLimited cd p <|> go (d+1) p
       where cd = targetDepth d
     initialDepth = 0

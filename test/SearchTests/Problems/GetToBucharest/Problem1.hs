@@ -1,9 +1,9 @@
-module UninformedSearch.Problem1 where
+module SearchTests.Problems.GetToBucharest.Problem1 where
 
 import Control.Search.Internal.Path
 import Control.Search.Types
 import Data.Word
-import UninformedSearch.GetToBucharest
+import SearchTests.Problems.GetToBucharest
 
 initProblem :: GetToBucharest
 initProblem =
@@ -35,32 +35,32 @@ initProblem =
     _actions Bucharest = []
     _actions _         = [Drive]
 
-bfsAnswer :: Answer
-bfsAnswer =
+bfsAnswer :: Maybe Answer
+bfsAnswer = Just $
   Path Bucharest (Just Drive) 211 $
     Path Fagaras (Just Drive) 99 $
       Node Sibiu Nothing 0
 
-dfsAnswer :: Answer
-dfsAnswer =
+dfsAnswer :: Maybe Answer
+dfsAnswer = Just $
   Path Bucharest (Just Drive) 101 $
     Path Pitesti (Just Drive) 97 $
       Path RimnicuVilcea (Just Drive) 80 $
         Node Sibiu Nothing 0
 
-dfsLimitedAnswer :: Answer
+dfsLimitedAnswer :: Maybe Answer
 dfsLimitedAnswer = bfsAnswer
 
 depthAnswer :: Word32 -> Maybe Answer
-depthAnswer 3 = Just dfsAnswer
-depthAnswer 2 = Just dfsLimitedAnswer
+depthAnswer 3 = dfsAnswer
+depthAnswer 2 = dfsLimitedAnswer
 depthAnswer _ = Nothing
 
-ucsAnswer :: Answer
+ucsAnswer :: Maybe Answer
 ucsAnswer = dfsAnswer
 
-greedyAnswer :: Answer
+greedyAnswer :: Maybe Answer
 greedyAnswer = dfsLimitedAnswer
 
-aStarAnswer :: Answer
+aStarAnswer :: Maybe Answer
 aStarAnswer = ucsAnswer

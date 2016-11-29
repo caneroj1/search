@@ -48,17 +48,11 @@ executable search-exe
 test-suite search-test
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
-  other-modules:       UninformedSearch.GetToBucharest
-                     , UninformedSearch.Problem1
-                     , UninformedSearch.Problem2
-                     , UninformedSearch.SlidingBlock
-                     , UninformedSearch.TestAStar
-                     , UninformedSearch.TestBFS
-                     , UninformedSearch.TestDFS
-                     , UninformedSearch.TestDFSLimited
-                     , UninformedSearch.TestGreedy
-                     , UninformedSearch.TestSlidingBlock
-                     , UninformedSearch.TestUCS
+  other-modules:       SearchTests.Utils
+                     , SearchTests.Problems.GetToBucharest
+                     , SearchTests.Problems.GetToBucharest.Problem1
+                     , SearchTests.Problems.GetToBucharest.Problem2
+                     , SearchTests.Problems.SlidingBlock
                      , UnitTests.MapSetUnitTests
                      , UnitTests.PathFunctionsUnitTests
                      , UnitTests.WeightsUnitTests

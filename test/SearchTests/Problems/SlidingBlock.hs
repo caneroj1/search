@@ -1,7 +1,7 @@
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE DeriveGeneric #-}
 
-module UninformedSearch.SlidingBlock where
+module SearchTests.Problems.SlidingBlock where
 
 import Control.Lens
 import Control.Search
@@ -66,7 +66,7 @@ initialState = Puzzle {
         , T8, T3, T1
       ]
 
--- heuristic function will count the number of tileso ut of place
+-- heuristic function will count the number of tiles out of place
 heuristic :: Blocks -> Cost
 heuristic Puzzle{..} = sum . map isOutOfPlace $ assocs board
   where

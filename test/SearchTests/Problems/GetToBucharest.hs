@@ -1,4 +1,4 @@
-module UninformedSearch.GetToBucharest where
+module SearchTests.Problems.GetToBucharest where
 
 import Control.Search.Internal.Path
 import Control.Search.Types
