@@ -18,27 +18,6 @@ import Data.List
 import Data.Maybe
 import Data.Word
 
--- move this stuff to general graph search utils?
--- graphSearch :: (Searchable a, Container c)
---             => a
---             -> Depth
---             -> Frontier c (State a) (Action a)
---             -> ExploredSet a
---             -> Maybe (Path (State a) (Action a))
--- graphSearch p depth frontier explored
---   | isNothing mbf          = Nothing
---   | isExplored st explored = graphSearch p frontier' explored
---   | isAtGoal path p        = Just path
---   | isAtDepthLimit d depth = graphSearch p frontier'  explored'
---   | otherwise              = graphSearch p frontier'' explored'
---   where
---     d                      =
---     mbf                    = headFrontier frontier
---     Just (path, frontier') = mbf
---     st                     = state path
---     frontier''             = foldl' addFrontier frontier' $! makeChildren p path
---     explored'              = explore st explored
-
 makeChildren :: Searchable state action
              -> Path state action
              -> Level state action
